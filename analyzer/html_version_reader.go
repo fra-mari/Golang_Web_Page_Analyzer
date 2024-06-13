@@ -1,26 +1,6 @@
-package main
+package analyzer
 
-const (
-	unknownVersion      = "unknown HTML version"
-	headerTagsRE        = "[hH][1-6]"
-	titleTag            = "title"
-	inputTag            = "input"
-	formTag             = "form"
-	baseTag             = "base"
-	aTag                = "a"
-	linkTag             = "link"
-	typeAttr            = "type"
-	actionAttr          = "action"
-	classAttr           = "class"
-	hrefAttr            = "href"
-	loginAttrVal        = "login"
-	loginFormCSSAttrVal = "login-form"
-	passwordAttrVal     = "password"
-	mailtoScheme        = "mailto"
-	telScheme           = "tel"
-	jsScheme            = "javascript"
-	httpStr             = "http"
-)
+import "strings"
 
 var htmlDeclarations = map[string]string{
 	"HTML 1.0":               `"-//IETF//DTD HTML 1.0//EN"`,
@@ -37,4 +17,20 @@ var htmlDeclarations = map[string]string{
 	"XHTML 1.0 Frameset":     `"-//W3C//DTD XHTML 1.0 Frameset//EN"`,
 	"XHTML 1.1":              `"-//W3C//DTD XHTML 1.1//EN"`,
 	"HTML 5":                 `<!DOCTYPE html>`,
+}
+
+// getHTMLVersion returns the version of the HTML document as a string. It accepts the body of the HTML document as input.
+func getHTMLVersion(body string) string {
+	version := unknownVersion
+
+	for name, declaration := range htmlDeclarations {
+		if strings.Contains(body, strings.ToLower(declaration)) ||
+			strings.Contains(body, strings.ToUpper(declaration)) ||
+			strings.Contains(body, declaration) {
+			version = name
+			break
+		}
+	}
+
+	return version
 }

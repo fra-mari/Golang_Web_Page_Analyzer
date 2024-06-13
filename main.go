@@ -1,26 +1,48 @@
 package main
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
+	"home24/server"
+	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func main() {
 	r := gin.Default()
-	r.LoadHTMLGlob("templates/*")
+	server.SetupRoutes(r)
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "form.html", nil)
-	})
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: r,
+	}
 
-	r.POST("/analyze", func(c *gin.Context) {
-		url := c.PostForm("url")
-		result, err := AnalyzePage(url)
-		if err != nil {
-			result.ErrorMessage = err.Error()
+	go func() {
+		// Service connections
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Printf("listen: %s\n", err)
 		}
-		c.HTML(http.StatusOK, "result.html", result)
-	})
+	}()
 
-	r.Run(":8080")
+	// Print startup message and shutdown instructions
+	log.Println("Server is running on port 8080. The frontend is accessible at: http://localhost:8080")
+	log.Println("To shut down the server gracefully, press Ctrl+C")
+
+	// Graceful shutdown
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Printf("Server forced to shutdown: %v", err)
+	}
+
+	log.Println("Server exiting")
 }
