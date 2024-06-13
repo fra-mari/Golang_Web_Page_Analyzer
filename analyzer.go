@@ -5,13 +5,18 @@ import (
 	"golang.org/x/net/html"
 	"io"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
+	"sync"
 )
+
+var wg sync.WaitGroup
 
 // getHTMLVersion returns the version of the HTML document as a string. It accepts the body of the HTML document as input.
 func getHTMLVersion(body string) string {
 	version := unknownVersion
+
 	for name, declaration := range htmlDeclarations {
 		if strings.Contains(body, strings.ToLower(declaration)) ||
 			strings.Contains(body, strings.ToUpper(declaration)) ||
@@ -29,18 +34,20 @@ func getHTMLVersion(body string) string {
 // N.B. The function uses a regular expression to match header tags and assumes the input to be UTF-8 encoded.
 func countHeaders(body string) map[string]int {
 	headers := make(map[string]int)
-	re := regexp.MustCompile(headerTags) // it is safe to compile with the provided constant
+	re := regexp.MustCompile(headerTagsRE) // it is safe to compile with the provided constant
 
-	tok := html.NewTokenizer(strings.NewReader(body))
+	tknzr := html.NewTokenizer(strings.NewReader(body))
 	for {
-		tokType := tok.Next()
+		tokType := tknzr.Next()
+
 		if tokType == html.ErrorToken {
 			break // stop looping at the end of the text
 		}
+
 		if tokType == html.StartTagToken {
-			tag := tok.Token()
-			if re.MatchString(tag.Data) {
-				headerType := strings.ToLower(tag.Data)
+			tok := tknzr.Token()
+			if re.MatchString(tok.Data) {
+				headerType := strings.ToLower(tok.Data)
 				headers[headerType]++
 			}
 		}
@@ -49,22 +56,25 @@ func countHeaders(body string) map[string]int {
 	return headers
 }
 
-// extractTitle extracts the title of the HTML document. It accepts the body of the HTML document as a string as input and returns the title as a string.
+// extractTitle extracts the title of the HTML document.
+// It accepts the body of the HTML document as a string as input and returns the title as a string.
 // N.B. The function assumes the input to be UTF-8 encoded and implies that the page has a single title tag or that the first one is the most relevant.
 func extractTitle(body string) string {
 	var title string
-	tok := html.NewTokenizer(strings.NewReader(body))
+	tknzr := html.NewTokenizer(strings.NewReader(body))
 	for {
-		tokType := tok.Next()
+		tokType := tknzr.Next()
+
 		if tokType == html.ErrorToken {
 			break // stop looping at the end of the text
 		}
+
 		if tokType == html.StartTagToken {
-			tag := tok.Token()
-			if tag.Data == titleTag {
-				tokType = tok.Next()
+			tok := tknzr.Token()
+			if tok.Data == titleTag {
+				tokType = tknzr.Next()
 				if tokType == html.TextToken {
-					title = tok.Token().Data
+					title = tknzr.Token().Data
 					break
 				}
 			}
@@ -79,28 +89,30 @@ func extractTitle(body string) string {
 // It looks both for the presence of a password input field and a form with an action attribute set to "login".
 func detectLoginForm(body string) bool {
 	var hasLoginForm bool
-	tok := html.NewTokenizer(strings.NewReader(body))
+	tknzr := html.NewTokenizer(strings.NewReader(body))
 	for {
-		tokType := tok.Next()
+		tokType := tknzr.Next()
+
 		if tokType == html.ErrorToken {
 			break // stop looping at the end of the text
 		}
+
 		if tokType == html.StartTagToken ||
-			tokType == html.SelfClosingTagToken { // input tag can be self-closing
-			tag := tok.Token()
-			switch tag.Data {
+			tokType == html.SelfClosingTagToken { // the input tag can be self-closing
+			tok := tknzr.Token()
+			switch tok.Data {
 			case inputTag:
-				if hasAttribute(tag, typeAttr) == passwordAttrVal {
+				if hasAttribute(tok, typeAttr) == passwordAttrVal {
 					hasLoginForm = true
 					break
 				}
 			case formTag:
-				if hasAttribute(tag, actionAttr) == loginAttrVal {
+				if hasAttribute(tok, actionAttr) == loginAttrVal {
 					hasLoginForm = true
 					break
 				}
 				// Check for CSS classes as well
-				if hasAttribute(tag, classAttr) == loginFormCSSAttrVal {
+				if hasAttribute(tok, classAttr) == loginFormCSSAttrVal {
 					hasLoginForm = true
 					break
 				}
@@ -111,8 +123,72 @@ func detectLoginForm(body string) bool {
 	return hasLoginForm
 }
 
+// extractLinks traverses the HTML text and sort the found links according to their character: internal or external
+// it currently looks for links in <a> and <link> tags, but could be extended to include more tags, such as <script> or <img>
+func extractLinks(body, domain string) ([]string, []string) {
+	var baseURL *url.URL
+	var intLinks, extLinks []string
+
+	tknzr := html.NewTokenizer(strings.NewReader(body))
+	for {
+		tokType := tknzr.Next()
+
+		if tokType == html.ErrorToken {
+			break // stop looping at the end of the text
+		}
+
+		if tokType == html.StartTagToken ||
+			tokType == html.SelfClosingTagToken { // the base and the link tag can be self-closing
+
+			tok := tknzr.Token()
+			switch tok.Data {
+			case baseTag: // N.B. this code assumes that - if present - there may be only one base tag in the HTML text
+				for _, attr := range tok.Attr {
+					link := attr.Val
+					if attr.Key == hrefAttr {
+						parsedBaseURL, err := url.Parse(link) // discarding invalid URLs
+						if err != nil {
+							continue
+						}
+						baseURL = parsedBaseURL
+					}
+				}
+			case aTag, linkTag:
+				for _, attr := range tok.Attr {
+					if attr.Key == hrefAttr {
+						link := attr.Val
+						parsedLink, err := url.Parse(link) // discarding formally invalid URLs
+						if err != nil {
+							continue
+						}
+						if parsedLink.Scheme == mailtoScheme || // discarding mail addresses, telephone numbers and js scripts
+							parsedLink.Scheme == telScheme ||
+							parsedLink.Scheme == jsScheme {
+							continue
+						}
+						if baseURL != nil && !parsedLink.IsAbs() {
+							link = addBaseToLink(baseURL, link)
+						}
+						if isInternalLink(parsedLink, domain) {
+							intLinks = append(intLinks, link)
+
+						} else {
+							extLinks = append(extLinks, link)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return intLinks, extLinks
+}
+
 func AnalyzePage(pageURL string) (AnalysisResult, error) {
 	var result AnalysisResult
+
+	// TODO: validate the ulr by parsing it
+
 	resp, err := http.Get(pageURL)
 	if err != nil {
 		return result, fmt.Errorf("URL is not reachable: %v", err)
@@ -123,63 +199,47 @@ func AnalyzePage(pageURL string) (AnalysisResult, error) {
 		return result, fmt.Errorf("HTTP status code: %d", resp.StatusCode)
 	}
 
+	domain := resp.Request.Host
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return result, fmt.Errorf("error reading HTML: %v", err)
 	}
+
 	result.HTMLVersion = getHTMLVersion(string(body))
 	result.HeadersCount = countHeaders(string(body))
 	result.PageTitle = extractTitle(string(body))
 	result.HasLoginForm = detectLoginForm(string(body))
 
-	resp2, err := http.Get(pageURL)
-	if err != nil {
-		return result, fmt.Errorf("URL is not reachable: %v", err)
+	internals, externals := extractLinks(string(body), domain)
+	result.InternalLinks = len(internals)
+	result.ExternalLinks = len(externals)
+
+	links := append(internals, externals...)
+
+	counter := 0
+	cleanLinks := make([]string, 0, len(links))
+	for _, l := range links {
+		cleanLink := strings.TrimSpace(l)
+		if !strings.HasPrefix(cleanLink, httpStr) { // TODO: come back on that. It reduces the number of calls but is arbitrary
+			counter++
+			continue
+		}
+		cleanLinks = append(cleanLinks, cleanLink)
 	}
-	defer resp2.Body.Close()
-
-	doc, err := html.Parse(resp2.Body)
-	if err != nil {
-		return result, fmt.Errorf("error parsing HTML: %v", err)
-	}
-
-	var f func(*html.Node)
-	f = func(n *html.Node) {
-		if n.Type == html.ElementNode {
-			switch n.Data {
-
-			case "a":
-				for _, attr := range n.Attr {
-					if attr.Key == "href" {
-						link := attr.Val
-						if strings.HasPrefix(link, "/") || strings.HasPrefix(link, pageURL) {
-							result.InternalLinks++
-						} else {
-							result.ExternalLinks++
-						}
-						if !isLinkAccessible(link) {
-							result.InaccessibleLinks++
-						}
-						break
-					}
-				}
+	wg.Add(len(cleanLinks)) // Number of goroutines to launch for testing the links accessibility in parallel
+	for _, cl := range cleanLinks {
+		go func(link string) {
+			defer wg.Done()
+			if !isLinkAccessible(link) {
+				counter++
 			}
-		}
-		for child := n.FirstChild; child != nil; child = child.NextSibling {
-			f(child)
-		}
+		}(cl)
 	}
+	// Wait for all goroutines to finish
+	wg.Wait()
 
-	// Analyze the document
-	f(doc)
+	result.InaccessibleLinks = counter
 
 	return result, nil
-}
-
-func isLinkAccessible(link string) bool {
-	resp, err := http.Get(link)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		return false
-	}
-	return true
 }
