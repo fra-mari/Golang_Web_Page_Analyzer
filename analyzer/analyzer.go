@@ -35,7 +35,7 @@ func AnalyzePage(pageURL string) (models.AnalysisResult, error) {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return result, fmt.Errorf("error reading HTML: %v", err)
+		return result, fmt.Errorf("Error reading HTML.<br>(%v)", err)
 	}
 
 	result.HTMLVersion = getHTMLVersion(string(body))
