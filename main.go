@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"home24/server"
 	"log"
@@ -22,8 +23,7 @@ func main() {
 	}
 
 	go func() {
-		// Service connections
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Printf("listen: %s\n", err)
 		}
 	}()

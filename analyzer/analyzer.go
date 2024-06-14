@@ -18,12 +18,12 @@ func AnalyzePage(pageURL string) (models.AnalysisResult, error) {
 	// Validate the URL
 	_, err := url.ParseRequestURI(pageURL)
 	if err != nil {
-		return result, fmt.Errorf("the provided URL is invalid. Please insert a valid URL and try again")
+		return result, fmt.Errorf("The provided URL is <u>invalid</u>. Please insert a valid URL and try again.")
 	}
 
 	resp, err := http.Get(pageURL)
 	if err != nil {
-		return result, fmt.Errorf("the provided URL is not reachable: %v", err)
+		return result, fmt.Errorf("The provided URL is <u>not reachable</u>.<br>(%v)", err)
 	}
 	defer resp.Body.Close()
 

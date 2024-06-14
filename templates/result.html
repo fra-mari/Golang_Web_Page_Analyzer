@@ -5,13 +5,14 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 <body>
-<!-- Include header -->
+
 {{template "header.html"}}
 
 <div class="container content">
     <h1>Analysis Result<br><br></h1>
     {{if .ErrorMessage}}
-    <p>Error: {{.ErrorMessage}}</p>
+    <div class="error-message">Something went wrong!</div>
+    <div class="error-details"><br>{{.ErrorMessage}}<br><br></div>
     {{else}}
     <p><strong>HTML Version:</strong> {{.HTMLVersion}}</p>
     <p><strong>Page Title: </strong><i>{{.PageTitle}}</i></p>
@@ -29,7 +30,6 @@
     <a href="/" class="button">Analyze another page</a>
 </div>
 
-<!-- Include footer -->
 {{template "footer.html"}}
 </body>
 </html>

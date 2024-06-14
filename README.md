@@ -22,4 +22,4 @@ This repository contains **the solution to the Home24 coding challenge**
     docker run -p 8080:8080 analyzer
     ```
 
-The application will be accessible at `http://localhost:8080`. To gracefully shut it down, you may press Ctrl+C.
+The application will be accessible at `http://localhost:8080`. To gracefully shut it down, you may press `Ctrl+C`.

@@ -1,5 +1,7 @@
 package models
 
+import "html/template"
+
 type AnalysisResult struct {
 	HTMLVersion       string
 	PageTitle         string
@@ -8,5 +10,5 @@ type AnalysisResult struct {
 	ExternalLinks     int
 	InaccessibleLinks int
 	HasLoginForm      bool
-	ErrorMessage      string
+	ErrorMessage      template.HTML // safe to use as all the HTML comes inside the app itself
 }
