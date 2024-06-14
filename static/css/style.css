@@ -41,7 +41,8 @@ header {
     margin: 10px auto 0;
 }
 
-header h1, footer p {
+header h1,
+footer p {
     margin: 0;
 }
 
@@ -63,7 +64,9 @@ h1 {
     text-align: center;
 }
 
-form, .content, ul {
+form,
+.content,
+ul {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -86,7 +89,8 @@ input[type="text"] {
     box-sizing: border-box;
 }
 
-button, a.button {
+button,
+a.button {
     background: #5cb85c;
     color: white;
     text-align: center;
@@ -100,26 +104,36 @@ button, a.button {
     width: 170px;
 }
 
-button:hover, a.button:hover {
+button:hover,
+a.button:hover {
     background: #4cae4c;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
+    margin-left: 20px;
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
 li {
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 10px 0;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 5px 0;
 }
 
 ul .key {
-    color:  #5cb85c;
+    color: #5cb85c;
     font-weight: bold;
+}
+
+/* Ensure the list items have left padding for indentation */
+ul li {
+    padding-left: 20px;
+    /* Add left padding for indentation */
 }
 
 .main-content {

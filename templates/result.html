@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
     <title>Webpage Analyzer</title>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
@@ -19,7 +19,7 @@
     <p><strong>Headers Count:</strong></p>
     <ul>
         {{range $key, $value := .HeadersCount}}
-        <li>➤ <span class="key">{{$key}}: </span>{{$value}}</li>
+        <li>○ <span class="key">{{$key}}: </span>{{$value}}</li>
         {{end}}
     </ul>
     <p><strong>Internal Links:</strong> {{.InternalLinks}}</p>

@@ -10,5 +10,5 @@ type AnalysisResult struct {
 	ExternalLinks     int
 	InaccessibleLinks int
 	HasLoginForm      bool
-	ErrorMessage      template.HTML // safe to use as all the HTML comes inside the app itself
+	ErrorMessage      template.HTML // safe to use as all the HTML comes from inside the app itself
 }
