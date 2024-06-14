@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webpage Analyzer</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+<!-- Include header -->
+{{template "header.html"}}
+
+<div class="container">
+    <h1>Analyze a Webpage</h1>
+    <form action="/analyze" method="post">
+        <label for="url">Please enter a valid URL:</label>
+        <input type="text" id="url" name="url" required placeholder="Ex: https://www.facebook.com/" >
+        <button type="submit">Analyze</button>
+    </form>
+</div>
+
+<!-- Include footer -->
+{{template "footer.html"}}
+</body>
+</html>

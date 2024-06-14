@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>Webpage Analyzer</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+<!-- Include header -->
+{{template "header.html"}}
+
+<div class="container content">
+    <h1>Analysis Result<br><br></h1>
+    {{if .ErrorMessage}}
+    <p>Error: {{.ErrorMessage}}</p>
+    {{else}}
+    <p><strong>HTML Version:</strong> {{.HTMLVersion}}</p>
+    <p><strong>Page Title: </strong><i>{{.PageTitle}}</i></p>
+    <p><strong>Headers Count:</strong></p>
+    <ul>
+        {{range $key, $value := .HeadersCount}}
+        <li>➤ <span class="key">{{$key}}: </span>{{$value}}</li>
+        {{end}}
+    </ul>
+    <p><strong>Internal Links:</strong> {{.InternalLinks}}</p>
+    <p><strong>External Links:</strong> {{.ExternalLinks}}</p>
+    <p><strong>Inaccessible Links:</strong> {{.InaccessibleLinks}}</p>
+    <p><strong>Contains Login Form:</strong> {{if .HasLoginForm}}Yes{{else}}No{{end}}</p>
+    {{end}}
+    <a href="/" class="button">Analyze another page</a>
+</div>
+
+<!-- Include footer -->
+{{template "footer.html"}}
+</body>
+</html>

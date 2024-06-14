@@ -1,0 +1,139 @@
+/* style.static */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    min-height: 100vh; /* Ensure full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack flex items vertically */
+}
+
+header {
+    background: #333;
+    color: white;
+    padding: 20px 20px 10px;
+    text-align: center;
+    position: relative;
+}
+
+.header-title {
+    position: absolute;
+    bottom: -30px; /* Adjust as needed to align properly */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.header-content {
+    margin-top: 20px;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 2.8rem;
+    color: white;
+}
+
+.header-line {
+    height: 3px;
+    background-color: #5cb85c;
+    width: 900px;
+    margin: 10px auto 0;
+}
+
+header h1, footer p {
+    margin: 0;
+}
+
+.container {
+    padding: 20px;
+}
+
+.container.content {
+    width: 80%; /* Adjust width as per your design */
+    max-width: 800px; /* Maximum width to ensure it doesn't get too wide on larger screens */
+    margin: 20px auto; /* Auto margin horizontally centers the container */
+    padding: 20px; /* Add padding inside the container */
+    text-align: left; /* Align text content to the left within the container */
+    box-sizing: border-box; /* Include padding and border in the total width */
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+form, .content, ul {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button, a.button {
+    background: #5cb85c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+button:hover, a.button:hover {
+    background: #4cae4c;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+}
+
+ul .key {
+    color:  #5cb85c;
+    font-weight: bold;
+}
+
+/* Main content wrapper */
+.main-content {
+    flex: 1; /* Take remaining space */
+}
+
+/* Footer styling */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0; /* Stick to the bottom */
+    width: 100%; /* Full width */
+}
+

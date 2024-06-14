@@ -7,7 +7,8 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine) {
-	r.LoadHTMLGlob("static/*")
+	r.LoadHTMLGlob("templates/*")
+	r.Static("/static", "./static")
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "form.html", nil)
