@@ -3,7 +3,6 @@ package analyzer
 import (
 	"golang.org/x/net/html"
 	"log"
-	"net/http"
 	"net/url"
 	"strings"
 )
@@ -42,13 +41,4 @@ func isInternalLink(link *url.URL, domain string) bool {
 	}
 
 	return false
-}
-
-// isLinkAccessible verifies whether a link is accessible by making a GET request and checking the status code
-func isLinkAccessible(link string) bool {
-	resp, err := http.Get(link)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		return false
-	}
-	return true
 }

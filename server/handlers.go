@@ -19,7 +19,8 @@ func SetupRoutes(r *gin.Engine) {
 
 	r.POST("/analyze", func(c *gin.Context) {
 		url := c.PostForm("url")
-		result, err := analyzer.AnalyzePage(url)
+		a := analyzer.NewAnalyzer()
+		result, err := a.AnalyzePage(url)
 		if err != nil {
 			result.ErrorMessage = template.HTML(err.Error())
 		}

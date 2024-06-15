@@ -8,7 +8,7 @@ type AnalysisResult struct {
 	HeadersCount      map[string]int
 	InternalLinks     int
 	ExternalLinks     int
-	InaccessibleLinks int
+	InaccessibleLinks int32
 	HasLoginForm      bool
 	ErrorMessage      template.HTML // safe to use as all the HTML comes from inside the app itself
 }
