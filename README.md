@@ -25,7 +25,7 @@ _This repository contains **the solution to the Home24 coding challenge**_
 ### How To Use This Code
 #### ➡️ &nbsp; On UNIX Systems 
 
-**P.S.**: If you use a Windows systeem, or you prefer to use `Docker`, please follow the instructions [in the following paragraph](https://github.com/fra-mari/two_movie_recommendation_engines#on-windows).
+**P.S.**: If you use a Windows systeem, or you prefer to use `Docker`, please follow the instructions [in the following paragraph](https://github.com/fra-mari/home24?tab=readme-ov-file#%EF%B8%8F--on-windows).
 #### ➡️ &nbsp; On Windows
 
 1. Clone the repository:
