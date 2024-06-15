@@ -25,6 +25,7 @@ WORKDIR /root/
 # Copy the Pre-built binary file from the previous stage
 COPY --from=build /app/main .
 COPY --from=build /app/static ./static
+COPY --from=build /app/templates ./templates
 
 # Set environment variables
 ENV GIN_MODE=release
