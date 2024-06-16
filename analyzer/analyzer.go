@@ -2,13 +2,14 @@ package analyzer
 
 import (
 	"fmt"
-	"home24/models"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
 	"sync"
 	"sync/atomic"
+
+	"home24/models"
 )
 
 type (

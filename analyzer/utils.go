@@ -1,10 +1,11 @@
 package analyzer
 
 import (
-	"golang.org/x/net/html"
 	"log"
 	"net/url"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 // hasAttribute verifies whether a tag has a specific attribute and returns its value.

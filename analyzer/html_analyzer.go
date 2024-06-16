@@ -1,10 +1,11 @@
 package analyzer
 
 import (
-	"golang.org/x/net/html"
 	"net/url"
 	"regexp"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 // HTMLAnalyzer defines an interface for analyzing HTML content.
