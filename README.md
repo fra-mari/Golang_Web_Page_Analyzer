@@ -73,7 +73,7 @@ Then, use the following instructions to build and start the application, either 
  
 #### 📌&nbsp; Direct build, on UNIX systems
 
->> ⚠️ **N.B.**: If you use a Windows system, or you prefer to use `Docker`, please follow the instructions [in the following paragraph](https://github.com/fra-mari/home24?tab=readme-ov-file#-docker-build-on-windows-and-on-unix-too-if-you-wish).
+> ⚠️ **N.B.**: If you use a Windows system, or you prefer to use `Docker`, please follow the instructions [in the following paragraph](https://github.com/fra-mari/home24?tab=readme-ov-file#-docker-build-on-windows-and-on-unix-too-if-you-wish).
 
 1. Ensure you have `Go` installed on your system. You can download it from the official [Go website](https://go.dev/dl/).
 
