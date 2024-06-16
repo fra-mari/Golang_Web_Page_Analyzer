@@ -42,7 +42,7 @@ Then, use the following instructions to build and start the application, either 
 
 ⚠️ **N.B.**: If you use a Windows system, or you prefer to use `Docker`, please follow the instructions [in the following paragraph](https://github.com/fra-mari/home24?tab=readme-ov-file#%EF%B8%8F--on-windows).
 
-1. Ensure you have Go installed on your system. You can download it from the official [Go website](https://go.dev/dl/).
+1. Ensure you have `Go` installed on your system. You can download it from the official [Go website](https://go.dev/dl/).
 
 2. In the project directory, download the dependencies:
     
@@ -68,12 +68,13 @@ Then, use the following instructions to build and start the application, either 
 	
 	```sh
     ./analyzer_build
-    ```    
+    ```
+        
 The application will be accessible at `http://localhost:8080`. To gracefully shut it down, you may press `Ctrl+C`.
 
 #### 📌&nbsp; Docker build, on Windows (and on UNIX, too, if you wish)
 
-1. Clone the repository:
+1. Ensure you have `Docker` installed on your system. You can download it from the official [Docker website](https://www.docker.com/products/docker-desktop/).
 
 
 
@@ -93,6 +94,5 @@ The application will be accessible at `http://localhost:8080`. To gracefully shu
 
 ---
 ### Possible Improvements and To Dos
-- [ ] Provide customers with a budget to spend into the supermarket.
-- [ ] Add a tool for the user to visualise the movements of each customer on the supermarket map.
-- [ ] Tests.
+- [ ] Add the **unit tests**. The code has been written with tests in mind: the `Analyzer` interface as well as the `HTMLAnalyzer` and `LinkChecker`interfaces allow for a straightforward implementation of mock methods, which in turn facilitates complete and granular testing of the businnes logic.  
+- [ ] **The code should be benchmarked to identifiy remaining bottlenecks that hinder performance**, so as to reformat and to adopt strategies to further boost the speed of the Analyzer, especially when it processes particularly long HTML documents.
