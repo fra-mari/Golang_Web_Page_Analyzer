@@ -5,7 +5,7 @@ _This repository contains **the solution to the Home24 coding challenge**_
 
 ### Description
 
-|                  ![gif](img/Simulator.gif)                  |
+|                  ![gif](img/wpanalyzer.gif)                  |
 | :----------------------------------------------------------: |
 | <span style="color:grey"> <i><b>Fig. 1</b>: The Web Page Analyzer in action</i></span> |
 
