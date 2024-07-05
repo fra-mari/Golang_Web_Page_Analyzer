@@ -1,5 +1,5 @@
 # Web Page Analyzer
-_This repository contains **a web page analyzer entirely written in Go**, which aims to illustrate the potential of concurrent programing for web scraping_
+_**A little web-app entirely written in Go**, aiming to illustrate the potential of concurrent programing for web scraping_
 
 ![made-with-go](https://img.shields.io/badge/Made_with-Go-blue) ![MIT license](https://img.shields.io/badge/License-MIT-orange.svg) ![Maintenance](https://img.shields.io/badge/Maintained%5F-yes-green.svg)
 
