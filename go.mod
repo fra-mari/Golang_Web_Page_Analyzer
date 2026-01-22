@@ -1,4 +1,4 @@
-module home24
+module webpageanalyzer
 
 go 1.22.0
 

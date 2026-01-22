@@ -8,8 +8,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-
-	"home24/models"
+	"webpageanalyzer/models"
 )
 
 type (

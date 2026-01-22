@@ -12,7 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"home24/server"
+	"webpageanalyzer/server"
 )
 
 func main() {

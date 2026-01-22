@@ -3,10 +3,9 @@ package server
 import (
 	"html/template"
 	"net/http"
+	"webpageanalyzer/analyzer"
 
 	"github.com/gin-gonic/gin"
-
-	"home24/analyzer"
 )
 
 func SetupRoutes(r *gin.Engine) {
