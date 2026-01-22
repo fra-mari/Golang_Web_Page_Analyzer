@@ -65,8 +65,8 @@ During the development, **it has been necessary to make a few assumptions** or t
 First of all, **clone this repository** and **navigate inside the folder**:
 
 ```sh
-git clone https://github.com/fra-mari/home24
-cd home24
+https://github.com/fra-mari/Golang_Web_Page_Analyzer.git
+cd Golang_Web_Page_Analyzer
 ```    
  
 Then, use the following instructions to build and start the application, either directly or, if you do not wish to install `Go`, using `Docker`. 
