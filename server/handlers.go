@@ -3,9 +3,10 @@ package server
 import (
 	"html/template"
 	"net/http"
-	"webpageanalyzer/analyzer"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/fra-mari/Golang_Web_Page_Analyzer/analyzer"
 )
 
 func SetupRoutes(r *gin.Engine) {

@@ -12,7 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"webpageanalyzer/server"
+	"github.com/fra-mari/Golang_Web_Page_Analyzer/server"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module webpageanalyzer
+module github.com/fra-mari/Golang_Web_Page_Analyzer
 
 go 1.22.0
 

@@ -8,7 +8,8 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	"webpageanalyzer/models"
+
+	"github.com/fra-mari/Golang_Web_Page_Analyzer/models"
 )
 
 type (
