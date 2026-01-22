@@ -22,6 +22,7 @@ func (lc linkChecker) isLinkAccessible(link string, wg *sync.WaitGroup, results 
 	resp, err := http.Get(link)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		results <- false
+		return
 	}
 	results <- true
 }
